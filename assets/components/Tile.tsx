@@ -1,5 +1,5 @@
-import { View , StyleSheet, Vibration, ToastAndroid } from 'react-native'
-import React, { useEffect } from 'react'
+import { View , StyleSheet, Vibration } from 'react-native'
+import React from 'react'
 import {Colors} from '@/assets/constants/Colors'
 import { Text } from '@react-navigation/elements';
 import { useRouter } from 'expo-router';
@@ -47,3 +47,5 @@ const styles = StyleSheet.create({
 })
 
 export default Tile
+
+// Copyright 2025 Darshan Aguru

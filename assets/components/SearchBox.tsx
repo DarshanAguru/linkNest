@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View,  StyleSheet } from 'react-native'
 import React from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import {Colors} from '@/assets/constants/Colors';
@@ -49,3 +49,5 @@ const styles = StyleSheet.create({
 })
 
 export default SearchBox
+
+// Copyright 2025 Darshan Aguru

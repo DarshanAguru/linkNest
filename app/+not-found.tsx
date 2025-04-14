@@ -31,3 +31,5 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
+
+// Copyright 2025 Darshan Aguru

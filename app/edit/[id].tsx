@@ -1,5 +1,5 @@
-import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text, Vibration, Keyboard, ToastAndroid, Alert, Platform } from 'react-native';
-import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
+import { View, TextInput,  StyleSheet, TouchableOpacity, Text,  Keyboard, ToastAndroid, Alert, Platform } from 'react-native';
+import { useFocusEffect, useLocalSearchParams,  useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Colors } from '@/assets/constants/Colors';
@@ -193,3 +193,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
 });
+
+
+// Copyright 2025 Darshan Aguru

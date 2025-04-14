@@ -1,6 +1,6 @@
-import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text, Vibration, Platform, ToastAndroid, Alert, Keyboard } from 'react-native';
-import { SplashScreen, useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect, useMemo, useState } from 'react';
+import { View, TextInput,  StyleSheet, TouchableOpacity, Text, Platform, ToastAndroid, Alert, Keyboard } from 'react-native';
+import { useFocusEffect,  useRouter } from 'expo-router';
+import React, { useMemo, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Colors } from '@/assets/constants/Colors';
 import * as SQLite from 'expo-sqlite';
@@ -45,7 +45,6 @@ export default function AddLinkScreen() {
 
   const handleSave =  () => {
     
-    // Save logic here
     
 
     const db = SQLite.openDatabaseSync('links.db');
@@ -190,3 +189,5 @@ const styles = StyleSheet.create({
   },
   
 });
+
+// Copyright 2025 Darshan Aguru

@@ -53,3 +53,5 @@ const styles = StyleSheet.create({
 })
 
 export default Tiles
+
+// Copyright 2025 Darshan Aguru

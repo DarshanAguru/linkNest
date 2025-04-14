@@ -1,12 +1,10 @@
 import { Text, View, StyleSheet, TouchableOpacity, Vibration, Platform } from 'react-native';
 import {  useFocusEffect, useRouter } from 'expo-router'; 
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
-import React, {  useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import  SearchBox  from  '@/assets/components/SearchBox';
-// import { dataTest } from '@/assets/constants/testData';
 import Tiles from '@/assets/components/Tiles';
 import { Entypo } from '@expo/vector-icons';
-//import { GestureHandlerRootView, NativeViewGestureHandler } from 'react-native-gesture-handler';
 import * as SQLite from 'expo-sqlite';
 
 
@@ -45,10 +43,6 @@ export default function Index() {
         console.error("Error fetching data:", error);
       }
       
-      // Optional cleanup if needed
-      return () => {
-        // Cleanup logic (if needed)
-      };
     }, [])
   );
 
@@ -110,3 +104,5 @@ const styles = StyleSheet.create({
     transform: "translate(50%, 50%)",
   }
 });
+
+// Copyright 2025 Darshan Aguru

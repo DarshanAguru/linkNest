@@ -78,3 +78,6 @@ export default function RootLayout() {
   );
   
 }
+
+
+// Copyright 2025 Darshan Aguru

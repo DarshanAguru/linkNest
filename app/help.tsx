@@ -123,3 +123,6 @@ const styles = StyleSheet.create({
     textAlign: "justify",
   },
 });
+
+
+// Copyright 2025 Darshan Aguru

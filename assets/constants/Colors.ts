@@ -5,3 +5,5 @@ export const Colors = {
     background: "#fff",
     border: "#e5e5e5",
 }
+
+// Copyright 2025 Darshan Aguru

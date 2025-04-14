@@ -3,3 +3,4 @@ export function getColor() {
         return colors[Math.floor(Math.random() * colors.length)]
   }
   
+  // Copyright 2025 Darshan Aguru

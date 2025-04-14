@@ -104,11 +104,10 @@ const ListItem = ({id, desc, url, tagId, tag, bgColor, timeStamp, handleRefresh}
     })
     .onEnd(() => {
       if (translateX.value > 80) {
-        // Vibration.vibrate(10);
-        runOnJS(confirmDelete)(); // If dragged right past 60, trigger popup -- swipe right
+        runOnJS(confirmDelete)(); // If dragged right past 80, trigger popup -- swipe right
       }
       else if (translateX.value < -80) {
-        runOnJS(shareLink)(); // If dragged left past -60, trigger share action --  swipe left
+        runOnJS(shareLink)(); // If dragged left past -80, trigger share action --  swipe left
       }
       else {
         translateX.value = withSpring(0); // Snap back
@@ -256,3 +255,5 @@ timeStamp:{
 });
 
 export default ListItem
+
+// Copyright 2025 Darshan Aguru

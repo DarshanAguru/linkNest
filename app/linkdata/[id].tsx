@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useLocalSearchParams } from 'expo-router/build/hooks'
 import { useNavigation } from 'expo-router';
-// import { testInternalData } from '@/assets/constants/testInternalData';
 import ListItem from '@/assets/components/ListItem';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import * as SQLite from 'expo-sqlite';
@@ -56,3 +55,5 @@ const styles = StyleSheet.create({
 
 
 export default Page
+
+// Copyright 2025 Darshan Aguru

@@ -119,3 +119,5 @@ const styles = StyleSheet.create({
     lineHeight: 26,
   },
 });
+
+// Copyright 2025 Darshan Aguru
