@@ -12,7 +12,7 @@ A minimalist and smart React Native app that helps users bookmark important URLs
    ```
 1. **Start the app**
 
-   ```
+   ```bash
    > npx expo app
    ```
 
