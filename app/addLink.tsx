@@ -13,12 +13,14 @@ export default function AddLinkScreen() {
   const [link, setLink] = useState('');
   const [desc, setDesc] = useState('');
   const [tag, setTag] = useState('');
-  const [tagData, setTagData] = useState<any>({});
+  const [tagData, setTagData] = useState<any>([]);
   const [visible, setVisible] = useState(true);
 
 
+ 
   const handleTagChange = (tag: string) => {
     setVisible(true);
+
     setTag(tag);
   };
 
@@ -31,8 +33,8 @@ export default function AddLinkScreen() {
 
   const filteredTags = useMemo(() => {
     // console.log(tagData);
-    if (tagData && tagData.length > 0) {
-      return tagData.filter((item: any) => item.tag.toLowerCase().startsWith(tag.toLowerCase()));
+    if (tagData && tagData.length > 0 && tag.trim() !== "") {
+      return tagData.filter((item: any) => item.tag.toLowerCase().startsWith(tag.trim().toLowerCase()));
     }
     return [];
   }, [tag, tagData]);
@@ -49,8 +51,8 @@ export default function AddLinkScreen() {
 
     const db = SQLite.openDatabaseSync('links.db');
     try{
-      if(link.trim() === "" || tag.trim() === "" || desc.trim() === ""){
-       
+      if(link.trim() === "" || tag.trim() === ""){
+        
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         if(Platform.OS === "android"){
           ToastAndroid.show("Please fill all the fields", ToastAndroid.SHORT);
@@ -61,13 +63,13 @@ export default function AddLinkScreen() {
         throw new Error("Please fill all the fields");
       }
       const tags:any = db.getAllSync("SELECT * FROM tags");
-      let presentTagId = tags.find((item: any) => item.tag === tag);
+      let presentTagId = tags.find((item: any) => item.tag === tag.trim());
       let tagId;
       if(presentTagId === undefined){
         const bgColor = getColor();
 
         const smt1 = db.prepareSync("INSERT INTO tags (tag, bgColor) VALUES ($tag, $bgColor)");
-        const r = smt1.executeSync({ $tag: tag, $bgColor: bgColor });
+        const r = smt1.executeSync({ $tag: tag.trim(), $bgColor: bgColor });
         tagId = r.lastInsertRowId;
         smt1.finalizeSync();
       }
@@ -75,7 +77,7 @@ export default function AddLinkScreen() {
         tagId = presentTagId.id;
       }
       const stmt = db.prepareSync("INSERT INTO links (url, tagId, desc, timeStamp) VALUES ($url, $tagId, $desc, $timeStamp)");
-      stmt.executeSync({ $url: link, $tagId: tagId, $desc: desc, $timeStamp: new Date().toISOString() });
+      stmt.executeSync({ $url: link.trim(), $tagId: tagId, $desc: desc.trim(), $timeStamp: new Date().toISOString() });
       stmt.finalizeSync();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       // console.log(db.getAllSync(`SELECT * FROM links`));

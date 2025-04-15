@@ -77,7 +77,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "<Project ID>"
+        "projectId": "< project-id >"
       }
     },
     "owner": "darshanaguru"

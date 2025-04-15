@@ -22,6 +22,7 @@ export default function Page() {
       setVisible(true);
       setTag(tag);
     };
+
   
     useFocusEffect(React.useCallback(()=>{
       const db = SQLite.openDatabaseSync('links.db');
@@ -32,8 +33,8 @@ export default function Page() {
   
     const filteredTags = useMemo(() => {
       // console.log(tagData);
-      if (tagData && tagData.length > 0) {
-        return tagData.filter((item: any) => item.tag.toLowerCase().startsWith(tag.toLowerCase()));
+      if (tagData && tagData.length > 0 && tagg.trim() !== "") {
+        return tagData.filter((item: any) => item.tag.toLowerCase().startsWith(tagg.trim().toLowerCase()));
       }
       return [];
     }, [tag, tagData]);
@@ -48,7 +49,7 @@ export default function Page() {
     try {
       const db = SQLite.openDatabaseSync('links.db');
   
-      if (link.trim() === "" || tagg.trim() === "" || desc.trim() === "") {
+      if (link.trim() === "" || tagg.trim() === "") {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         if (Platform.OS === "android") {
           ToastAndroid.show("Please fill all the fields", ToastAndroid.SHORT);
@@ -65,12 +66,12 @@ export default function Page() {
       const oldTagId = currentLink.tagId;
   
       let tagId;
-      const presentTag = tags.find((item: any) => item.tag === tagg);
+      const presentTag = tags.find((item: any) => item.tag === tagg.trim());
   
       if (!presentTag) {
         const bgColor = getColor();
         const smt1 = db.prepareSync("INSERT INTO tags (tag,  bgColor) VALUES ($tag,  $bgColor)");
-        const r = smt1.executeSync({ $tag: tagg, $bgColor: bgColor });
+        const r = smt1.executeSync({ $tag: tagg.trim(), $bgColor: bgColor });
         tagId = r.lastInsertRowId;
         smt1.finalizeSync();
       } else {
@@ -78,7 +79,7 @@ export default function Page() {
       }
   
       const stmt = db.prepareSync("UPDATE links SET url = $url, tagId = $tagId, desc = $desc, timeStamp = $timeStamp WHERE id = $id");
-      stmt.executeSync({ $url: link, $tagId: tagId, $desc: desc, $timeStamp: new Date().toISOString(), $id: Number(id) });
+      stmt.executeSync({ $url: link.trim(), $tagId: tagId, $desc: desc.trim(), $timeStamp: new Date().toISOString(), $id: Number(id) });
       stmt.finalizeSync();
   
       // Check if oldTagId is unused now
