@@ -1,49 +1,56 @@
-import { View , StyleSheet, Vibration } from 'react-native'
-import React from 'react'
-import {Colors} from '@/assets/constants/Colors'
+import { View, StyleSheet, Vibration, TouchableOpacity } from 'react-native'
+import React, { memo, useCallback } from 'react'
+import { Colors } from '@/assets/constants/Colors'
 import { Text } from '@react-navigation/elements';
 import { useRouter } from 'expo-router';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 type SearchBoxProps = {
-    tag: string,
-    bgColor: string,
-    id: number,
+  tag: string,
+  bgColor: string,
+  id: number,
 }
 
-const Tile = (({id, tag, bgColor}: SearchBoxProps, key: React.Key) => {
+const Tile = memo(({ id, tag, bgColor }: SearchBoxProps) => {
   const router = useRouter();
- 
-    return (
-      <TouchableOpacity key={key} onPress={()=>{Vibration.vibrate(8); router.push({pathname: '/linkdata/[id]' , params:{id: tag, tagId: String(id)}});}} >
-      <View style={{...styles.tile, backgroundColor: "#212429", boxShadow: `6px 6px 2px 4px ${bgColor}`}}>
-         
-            <Text style={{color: bgColor, fontSize: 20, fontWeight: "400", fontFamily: "winkyRough"}}>{tag}</Text>
-          
+
+  const handlePress = useCallback(() => {
+    Vibration.vibrate(8);
+    router.push({ pathname: '/linkdata/[id]', params: { id: tag, tagId: String(id) } });
+  }, [id, tag, router]);
+
+  return (
+    <TouchableOpacity onPress={handlePress} >
+      <View style={[styles.tile, { boxShadow: `6px 6px 2px 4px ${bgColor}` }]}>
+        <Text style={[styles.text, { color: bgColor }]}>{tag}</Text>
       </View>
-      </TouchableOpacity>
-    );
-  });
+    </TouchableOpacity>
+  );
+});
 
 const styles = StyleSheet.create({
-   
-    tile:{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 16,
-        width: 120,
-        height: 120,
-        margin: 16,
-        elevation: 5,
-        borderWidth: 1,
-        borderColor: Colors.gray,
 
-    }
-    
-    
+  tile: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: "#212429",
+    borderRadius: 16,
+    width: 120,
+    height: 120,
+    margin: 16,
+    elevation: 5,
+    borderWidth: 1,
+    borderColor: Colors.gray,
+
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: "400",
+    fontFamily: "winkyRough"
+  }
+
+
 })
 
 export default Tile

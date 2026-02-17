@@ -1,14 +1,16 @@
-import { View, TextInput,  StyleSheet, TouchableOpacity, Text, Platform, ToastAndroid, Alert, Keyboard } from 'react-native';
-import { useFocusEffect,  useRouter } from 'expo-router';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text, Platform, ToastAndroid, Alert, Keyboard, ScrollView } from 'react-native';
+import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Colors } from '@/assets/constants/Colors';
+import { Entypo } from '@expo/vector-icons';
 import * as SQLite from 'expo-sqlite';
 import { getColor } from '@/assets/utils/colorPicker';
 import * as Haptics from 'expo-haptics';
+import { getShadow } from '@/assets/utils/shadow';
 
 export default function AddLinkScreen() {
-  
+
   const router = useRouter();
   const [link, setLink] = useState('');
   const [desc, setDesc] = useState('');
@@ -17,19 +19,19 @@ export default function AddLinkScreen() {
   const [visible, setVisible] = useState(true);
 
 
- 
+
   const handleTagChange = (tag: string) => {
     setVisible(true);
 
     setTag(tag);
   };
 
-  useFocusEffect(React.useCallback(()=>{
+  useFocusEffect(React.useCallback(() => {
     const db = SQLite.openDatabaseSync('links.db');
-    const res:any = db.getAllSync(`SELECT * FROM tags ORDER BY tag ASC`);
+    const res: any = db.getAllSync(`SELECT * FROM tags ORDER BY tag ASC`);
     setTagData(res);
     db.closeSync();
-  },[]))
+  }, []))
 
   const filteredTags = useMemo(() => {
     // console.log(tagData);
@@ -38,34 +40,34 @@ export default function AddLinkScreen() {
     }
     return [];
   }, [tag, tagData]);
-  
+
   const handleTagSelect = (selectedTag: string) => {
     setTag(selectedTag);
     setVisible(false);
     Keyboard.dismiss(); // hide suggestions
   };
 
-  const handleSave =  () => {
-    
-    
+  const handleSave = () => {
+
+
 
     const db = SQLite.openDatabaseSync('links.db');
-    try{
-      if(link.trim() === "" || tag.trim() === ""){
-        
+    try {
+      if (link.trim() === "" || tag.trim() === "") {
+
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-        if(Platform.OS === "android"){
+        if (Platform.OS === "android") {
           ToastAndroid.show("Please fill all the fields", ToastAndroid.SHORT);
         }
-        else{
+        else {
           Alert.alert("Error", "Please fill all the fields", [{ text: "OK" }]);
         }
         throw new Error("Please fill all the fields");
       }
-      const tags:any = db.getAllSync("SELECT * FROM tags");
+      const tags: any = db.getAllSync("SELECT * FROM tags");
       let presentTagId = tags.find((item: any) => item.tag === tag.trim());
       let tagId;
-      if(presentTagId === undefined){
+      if (presentTagId === undefined) {
         const bgColor = getColor();
 
         const smt1 = db.prepareSync("INSERT INTO tags (tag, bgColor) VALUES ($tag, $bgColor)");
@@ -73,7 +75,7 @@ export default function AddLinkScreen() {
         tagId = r.lastInsertRowId;
         smt1.finalizeSync();
       }
-      else{
+      else {
         tagId = presentTagId.id;
       }
       const stmt = db.prepareSync("INSERT INTO links (url, tagId, desc, timeStamp) VALUES ($url, $tagId, $desc, $timeStamp)");
@@ -87,13 +89,12 @@ export default function AddLinkScreen() {
       setTag('');
       setDesc('');
       Keyboard.dismiss();
-      if(router.canDismiss())
-      {
+      if (router.canDismiss()) {
         router.dismissAll();
       }
       router.replace("/");
     }
-    catch(e){
+    catch (e) {
       console.log(e);
     }
     setLink('');
@@ -103,44 +104,52 @@ export default function AddLinkScreen() {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <TextInput
-        style={styles.input}
-        value={link}
-        placeholder="Link"
-        onChangeText={setLink}
-        placeholderTextColor={"#888"}
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          value={link}
+          placeholder="Link"
+          onChangeText={setLink}
+          placeholderTextColor={"#888"}
+        />
+      </View>
 
-      />
-     <View style={{ position: 'relative' }}>
-  <TextInput
-    style={styles.input}
-    value={tag}
-    placeholder="Tag"
-    onSubmitEditing={() => setVisible((prev) => !prev)}
-    onChangeText={handleTagChange}
-    placeholderTextColor={"#888"}
-  />
-  
-  {tag.length > 0 && filteredTags?.length > 0 && visible &&  (
-    <View style={styles.dropdown}>
-      {filteredTags.map((item: any) => (
-        <TouchableOpacity key={item.id} onPress={() => handleTagSelect(item.tag)} style={styles.dropdownItem}>
-          <Text style={{ color: 'white' }}>{item.tag}</Text>
-        </TouchableOpacity>
-      ))}
-    </View>
-  )}
-</View>
+      <View style={{ position: 'relative' }}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            value={tag}
+            placeholder="Tag"
+            onSubmitEditing={() => setVisible((prev) => !prev)}
+            onChangeText={handleTagChange}
+            placeholderTextColor={"#888"}
+          />
 
-      <TextInput
-        style={styles.input}
-        value={desc}
-        placeholder="Description (optional)"
-        onChangeText={setDesc}
-        placeholderTextColor={"#888"}
-      />
-      <TouchableOpacity  style={styles.button} onPress={handleSave} >
-        <Text style={{color: "white", fontSize: 20, fontFamily: "winkyRough"}}>Save Link</Text>
+          {tag.length > 0 && filteredTags?.length > 0 && visible && (
+            <ScrollView style={styles.dropdown} keyboardShouldPersistTaps="handled">
+              {filteredTags.map((item: any) => (
+                <TouchableOpacity key={item.id} onPress={() => handleTagSelect(item.tag)} style={styles.dropdownItem}>
+                  <Entypo name="price-tag" size={20} color={Colors.tint} style={{ marginRight: 10 }} />
+                  <Text style={styles.dropdownText}>{item.tag}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          )}
+        </View>
+      </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          value={desc}
+          placeholder="Description (optional)"
+          onChangeText={setDesc}
+          placeholderTextColor={"#888"}
+        />
+      </View>
+
+      <TouchableOpacity style={styles.button} onPress={handleSave}>
+        <Text style={{ color: "white", fontSize: 20, fontFamily: "winkyRough" }}>Save Link</Text>
       </TouchableOpacity>
     </GestureHandlerRootView>
   );
@@ -148,28 +157,38 @@ export default function AddLinkScreen() {
 
 const styles = StyleSheet.create({
   container: { padding: 20, flex: 1, backgroundColor: '#25292e' },
-  input: {
-    padding: 10,
+
+
+  // ... (in styles)
+
+  inputContainer: {
     marginVertical: 10,
     borderWidth: 1,
-    color:"white",
     borderColor: Colors.gray,
     borderRadius: 8,
-    boxShadow: "6px 6px 2px 4px rgba(255,255,255,0.5)",
-    
+    backgroundColor: '#25292e',
+    ...getShadow("#ffffff", 0.3, 2, 5, { width: 3, height: 3 }),
+    boxShadow: "4px 4px 2px 2px #ffffff",
   },
-  button:{
-    alignSelf:"center",
+  input: {
+    padding: 10,
+    color: "white",
+    width: '100%',
+  },
+  button: {
+    alignSelf: "center",
     display: "flex",
-    justifyContent:"center",
-    alignItems:"center",
+    justifyContent: "center",
+    alignItems: "center",
     width: "60%",
     marginVertical: 24,
     borderRadius: 10,
     padding: 10,
     borderWidth: 1,
-    borderColor:Colors.gray,
-    boxShadow: "6px 6px 2px 4px rgba(255,255,255,0.5)",
+    borderColor: Colors.gray,
+    backgroundColor: '#25292e',
+    ...getShadow("#ffffff", 0.3, 2, 5, { width: 3, height: 3 }),
+    boxShadow: "4px 4px 2px 2px #ffffff",
   },
   dropdown: {
     position: 'absolute',
@@ -181,15 +200,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     zIndex: 99,
-    maxHeight: 150,
-    overflow:"scroll",
+    maxHeight: 180, // Increased height
+    ...getShadow("#000", 0.5, 5, 5, { width: 0, height: 3 }),
   },
   dropdownItem: {
-    padding: 10,
-    borderBottomColor: Colors.gray,
+    padding: 12,
+    borderBottomColor: '#444',
     borderBottomWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#3a3a3a', // Slightly lighter for contrast
   },
-  
+  dropdownText: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: "winkyRough",
+  },
+
 });
 
 // Copyright 2025 Darshan Aguru

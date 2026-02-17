@@ -4,7 +4,7 @@
     "slug": "linknest",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/icon_tiny.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,7 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "icon": "./assets/images/icon.png"
+      "icon": "./assets/images/icon_tiny.png"
     },
     "androidStatusBar": {
       "backgroundColor": "#25292e",
@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
+        "foregroundImage": "./assets/images/icon_tiny.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.darshanaguru.linknest",
@@ -31,14 +31,14 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/icon_tiny.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/icon.png",
+          "image": "./assets/images/icon_tiny.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#25292e"
@@ -75,9 +75,6 @@
     "extra": {
       "router": {
         "origin": false
-      },
-      "eas": {
-        "projectId": "< project-id >"
       }
     },
     "owner": "darshanaguru"
