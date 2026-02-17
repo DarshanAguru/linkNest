@@ -114,7 +114,7 @@ export default function AddLinkScreen() {
         />
       </View>
 
-      <View style={{ position: 'relative' }}>
+      <View style={{ position: 'relative', zIndex: 100 }}>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
