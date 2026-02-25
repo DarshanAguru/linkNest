@@ -13,6 +13,7 @@ LinkNest is a minimalist, smart React Native application designed to help users 
 ## ✨ Features
 
 -   **Smart Saving**: Add links with auto-suggested tags and optional descriptions.
+-   **Security**: Create a secure 'Private' tile to lock sensitive links behind device biometrics.
 -   **Local Storage**: All data is stored locally on your device using SQLite. No cloud, no tracking.
 -   **Intuitive Gestures**:
     -   **Single Tap**: Copy link to clipboard 📋

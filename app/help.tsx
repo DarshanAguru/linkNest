@@ -102,6 +102,17 @@ export default function Page() {
         </HelpCard>
 
         <HelpCard
+          icon={<MaterialIcons name="security" size={22} color={Colors.tint} />}
+          title="Private Links"
+        >
+          <Text style={styles.text}>
+            • Toggle <Text style={styles.bold}>Save in Private tag?</Text> when adding a link to hide it.{'\n'}
+            • Links saved here are grouped under the <Text style={styles.bold}>Private</Text> tile.{'\n'}
+            • You must use <Text style={styles.bold}>Biometrics or Device Passcode</Text> to unlock and view them!
+          </Text>
+        </HelpCard>
+
+        <HelpCard
           icon={<MaterialCommunityIcons name="database" size={22} color={Colors.tint} />}
           title="Data Storage"
         >

@@ -1,4 +1,4 @@
-import { View, TextInput, StyleSheet, TouchableOpacity, Text, Platform, ToastAndroid, Alert, Keyboard, ScrollView } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text, Platform, ToastAndroid, Alert, Keyboard, ScrollView, Switch, Vibration } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -17,8 +17,20 @@ export default function AddLinkScreen() {
   const [tag, setTag] = useState('');
   const [tagData, setTagData] = useState<any>([]);
   const [visible, setVisible] = useState(true);
+  const [isLocked, setIsLocked] = useState(false);
 
-
+  const handleToggleLock = (value: boolean) => {
+    setIsLocked(value);
+    if (value) {
+      setTag('Private');
+      setVisible(false);
+      Keyboard.dismiss();
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    } else {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      setTag('');
+    }
+  };
 
   const handleTagChange = (tag: string) => {
     setVisible(true);
@@ -53,6 +65,17 @@ export default function AddLinkScreen() {
 
     const db = SQLite.openDatabaseSync('links.db');
     try {
+      if (!isLocked && tag.trim().toLowerCase() === "private") {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        const msg = "Please use the toggle to save strictly to Private tag.";
+        if (Platform.OS === "android") {
+          ToastAndroid.show(msg, ToastAndroid.SHORT);
+        } else {
+          Alert.alert("Error", msg, [{ text: "OK" }]);
+        }
+        return;
+      }
+
       if (link.trim() === "" || tag.trim() === "") {
 
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -82,8 +105,6 @@ export default function AddLinkScreen() {
       stmt.executeSync({ $url: link.trim(), $tagId: tagId, $desc: desc.trim(), $timeStamp: new Date().toISOString() });
       stmt.finalizeSync();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      // console.log(db.getAllSync(`SELECT * FROM links`));
-      // console.log(db.getAllSync(`SELECT * FROM tags`));
       db.closeSync();
       setLink('');
       setTag('');
@@ -117,9 +138,10 @@ export default function AddLinkScreen() {
       <View style={{ position: 'relative', zIndex: 100 }}>
         <View style={styles.inputContainer}>
           <TextInput
-            style={styles.input}
+            style={[styles.input, isLocked && { color: "#888", backgroundColor: "#333" }]}
             value={tag}
             placeholder="Tag"
+            editable={!isLocked}
             onSubmitEditing={() => setVisible((prev) => !prev)}
             onChangeText={handleTagChange}
             placeholderTextColor={"#888"}
@@ -148,6 +170,16 @@ export default function AddLinkScreen() {
         />
       </View>
 
+      <View style={styles.switchContainer}>
+        <Text onPress={() => handleToggleLock(!isLocked)} style={styles.switchLabel}>Save in Private tag?</Text>
+        <Switch
+          value={isLocked}
+          onValueChange={handleToggleLock}
+          trackColor={{ false: "#767577", true: Colors.tint }}
+          thumbColor={isLocked ? "#f4f3f4" : "#f4f3f4"}
+         />
+      </View>
+
       <TouchableOpacity style={styles.button} onPress={handleSave}>
         <Text style={{ color: "white", fontSize: 20, fontFamily: "winkyRough" }}>Save Link</Text>
       </TouchableOpacity>
@@ -161,6 +193,18 @@ const styles = StyleSheet.create({
 
   // ... (in styles)
 
+  switchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    marginVertical: 10,
+  },
+  switchLabel: {
+    color: 'white',
+    fontSize: 18,
+    fontFamily: "winkyRough",
+  },
   inputContainer: {
     marginVertical: 10,
     borderWidth: 1,

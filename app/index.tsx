@@ -20,26 +20,45 @@ export default function Index() {
 
   const handleSearch = useCallback((query: any) => {
     setSearchQuery({ search: query });
-    if (data.length > 0 && query.trim() !== "" && query.length > 0) {
+    const trimmedQuery = query.trim().toLowerCase();
+
+    if (allData.length > 0 && trimmedQuery !== "") {
       const filteredData = allData.filter((item: any) => {
-        return item.tag.toLowerCase().startsWith(query.toLowerCase());
+        const tag = item.tag.toLowerCase();
+
+        // Match tag itself (substring match or query contains tag)
+        const tagMatch = tag.includes(trimmedQuery) || trimmedQuery.includes(tag);
+
+        // Match any link description or url
+        const linkMatch = item.links?.some((link: any) => {
+          const desc = link.desc ? link.desc.toLowerCase() : "";
+          const url = link.url ? link.url.toLowerCase() : "";
+          return desc.includes(trimmedQuery) || url.includes(trimmedQuery);
+        });
+
+        return tagMatch || linkMatch;
       });
       setData(filteredData);
     }
     else {
       setData(allData);
     }
-  }, [allData, data.length]);
+  }, [allData]);
 
   useFocusEffect(
     React.useCallback(() => {
       try {
         const db = SQLite.openDatabaseSync('links.db');
-        const res = db.getAllSync(`SELECT * FROM tags ORDER BY tag ASC`);
-        // console.log(res);
+        const tagsRes = db.getAllSync(`SELECT * FROM tags ORDER BY tag ASC`);
+        const linksRes = db.getAllSync(`SELECT tagId, desc, url FROM links`);
 
-        setData(res);
-        setAllData(res);
+        const tagsWithLinks = tagsRes.map((tag: any) => ({
+          ...tag,
+          links: linksRes.filter((link: any) => link.tagId === tag.id)
+        }));
+
+        setData(tagsWithLinks);
+        setAllData(tagsWithLinks);
         db.closeSync();
       } catch (error) {
         console.error("Error fetching data:", error);
