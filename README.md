@@ -103,7 +103,7 @@ A curious software developer with a passion for full-stack development, astrophy
 
 ## 📄 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See [LICENSE](LICENSE.md) for more information.
 
 ---
 
