@@ -2,6 +2,7 @@
 
 > **Your cozy hub to save, organize, and access links with ease.**
 
+![Version](https://img.shields.io/badge/version-v1.0.1-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS-lightgrey.svg)
 ![Status](https://img.shields.io/badge/status-Active-success.svg)
@@ -57,17 +58,6 @@ LinkNest is a minimalist, smart React Native application designed to help users 
 
 4.  **Run on Device**
     -   Scan the QR code with the **Expo Go** app (Android) or Camera app (iOS).
-
----
-
-## 🗺️ Roadmap
-
-We are constantly improving LinkNest! Here are some exciting things coming up:
-
--   [x] **v1.0.0**: Initial Release (Local Storage, Gestures, Search)
--   [ ] **v1.1.0**: Cloud Sync & Backup (Optional)
--   [ ] **v1.2.0**: Desktop Companion App
--   [ ] **Future**: Official APK Release on Google Play Store 🚀
 
 ---
 

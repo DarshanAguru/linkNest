@@ -81,7 +81,7 @@ export default function Index() {
     <View style={styles.container}>
       <SearchBox placeholder='Search...' value={searchQuery.search} onChangeText={handleSearch} />
 
-      <ScrollView style={styles.scroll}>
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
         {renderContent}
       </ScrollView>
 
@@ -115,6 +115,9 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 20,
     marginBottom: 65,
+  },
+  scrollContent: {
+    paddingBottom: 120,
   },
   addNewButton:
   {

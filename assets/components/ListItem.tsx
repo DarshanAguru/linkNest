@@ -214,8 +214,8 @@ const ListItem = memo(({ id, desc, url, tagId, tag, bgColor, timeStamp, handleRe
         <Animated.View style={[styles.listItem, getShadow(bgColor, 0.6, 6, 6, { width: 3, height: 3 }), { boxShadow: `6px 6px 2px 2px ${bgColor}` }, animatedStyle]}>
           <View key={id} >
             <View>
-              <Text style={[styles.url, { color: bgColor }]}>{url}</Text>
-              <Text style={styles.desc}>{desc}</Text>
+              <Text style={[styles.url, { color: bgColor }]} numberOfLines={1}>{url}</Text>
+              {desc ? <Text style={styles.desc} numberOfLines={2}>{desc}</Text> : null}
             </View>
             <Text style={styles.timeStamp}>{timeStamp.toLocaleString()}</Text>
           </View>

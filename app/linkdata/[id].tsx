@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   listContent: {
     marginHorizontal: 4,
     marginVertical: 40,
-    paddingBottom: 20
+    paddingBottom: 120
   }
 });
 

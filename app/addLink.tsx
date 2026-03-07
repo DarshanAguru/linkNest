@@ -132,6 +132,7 @@ export default function AddLinkScreen() {
           placeholder="Link"
           onChangeText={setLink}
           placeholderTextColor={"#888"}
+          multiline={true}
         />
       </View>
 
@@ -167,6 +168,7 @@ export default function AddLinkScreen() {
           placeholder="Description (optional)"
           onChangeText={setDesc}
           placeholderTextColor={"#888"}
+          multiline={true}
         />
       </View>
 
@@ -218,6 +220,7 @@ const styles = StyleSheet.create({
     padding: 10,
     color: "white",
     width: '100%',
+    maxHeight: 100,
   },
   button: {
     alignSelf: "center",
